@@ -6,7 +6,7 @@ TESTS := t-entities
 GARBAGE := $(OBJECTS) $(TESTS)
 
 CLANG := clang -std=c99 -Werror -Weverything
-GCC := gcc -std=c99 -Werror -Wall -Wextra
+GCC := gcc -std=c99 -pedantic -Werror -Wall -Wextra
 CFLAGS := -O3 -ggdb3
 NOWARN :=
 
