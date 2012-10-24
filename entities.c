@@ -5,8 +5,9 @@
 #include "entities.h"
 
 #include <errno.h>
-#include <string.h>
+#include <stdbool.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define UNICODE_MAX 0x10FFFFul
 
@@ -274,8 +275,8 @@ static int cmp(const void *key, const void *value)
 
 static const char *get_named_entity(const char *name)
 {
-	const char *const *entity = bsearch(name, NAMED_ENTITIES,
-		sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES,
+	const char *const *entity = (const char *const *)bsearch(name,
+		NAMED_ENTITIES, sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES,
 		sizeof *NAMED_ENTITIES, cmp);
 
 	return entity ? entity[1] : NULL;
@@ -318,7 +319,7 @@ static size_t putc_utf8(unsigned long cp, char *buffer)
 	return 0;
 }
 
-static _Bool parse_entity(
+static bool parse_entity(
 	const char *current, char **to, const char **from)
 {
 	const char *end = strchr(current, ';');
@@ -328,13 +329,13 @@ static _Bool parse_entity(
 	{
 		char *tail = NULL;
 		int errno_save = errno;
-		_Bool hex = current[2] == 'x' || current[2] == 'X';
+		bool hex = current[2] == 'x' || current[2] == 'X';
 
 		errno = 0;
 		unsigned long cp = strtoul(
 			current + (hex ? 3 : 2), &tail, hex ? 16 : 10);
 
-		_Bool fail = errno || tail != end || cp > UNICODE_MAX;
+		bool fail = errno || tail != end || cp > UNICODE_MAX;
 		errno = errno_save;
 		if(fail) return 0;
 
