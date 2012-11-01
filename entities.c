@@ -1,4 +1,7 @@
-/*	Copyright 2012 Christoph Gärtner
+/*	Copyright 2012 Christoph Gärtner, ooxi/entities
+		https://bitbucket.org/cggaertner/cstuff
+		https://github.com/ooxi/entities
+
 	Distributed under the Boost Software License, Version 1.0
 */
 
@@ -386,3 +389,4 @@ size_t decode_html_entities_utf8(char *dest, const char *src)
 
 	return (size_t)(to - dest);
 }
+
