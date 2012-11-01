@@ -6,6 +6,7 @@
 */
 
 #include "entities.h"
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
@@ -29,6 +30,7 @@ int main(void)
 		assert(strcmp(buffer, SAMPLE) == 0);
 	}
 
-	return 0;
+	fprintf(stdout, "All tests passed :-)\n");
+	return EXIT_SUCCESS;
 }
 
