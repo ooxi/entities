@@ -391,3 +391,32 @@ size_t decode_html_entities_utf8(char *dest, const char *src)
 	return (size_t)(to - dest);
 }
 
+int encode_html_entities(char *dest, const char *src) {
+        char *to = dest;
+        for( const char *from = src ; *from ; from++ ) {
+            int i = 9999;
+            if ( *from <= '+' ) {
+                sprintf(to,"%%%02x",*from);
+                to += 3;
+                continue;
+            }
+            if ( *from<='z' ) {
+                *to = *from;
+                to++;
+                continue;
+            }
+            //if ( *from=='\r' || *from=='\n' ) continue;
+            for( i=0 ; i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ; i++ )
+                if ( *from == NAMED_ENTITIES[i][1][0] ) break;
+            if ( i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ) {
+                strcpy(to,NAMED_ENTITIES[i][0]);
+                to += strlen(NAMED_ENTITIES[i][0]);
+            }
+            else {
+                *to = *from;
+                to++;
+            }
+        }
+        *to = 0;
+        return strlen(dest);
+}
