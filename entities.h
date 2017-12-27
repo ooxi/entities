@@ -22,7 +22,7 @@ extern size_t decode_html_entities_utf8(char *dest, const char *src);
 
 
 
-int encode_html_entities(char *dest, const char *src);
+size_t encode_html_entities(char *dest, const char *src);
 
 #endif
 

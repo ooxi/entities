@@ -392,10 +392,9 @@ size_t decode_html_entities_utf8(char *dest, const char *src)
 	return (size_t)(to - dest);
 }
 
-int encode_html_entities(char *dest, const char *src) {
+size_t encode_html_entities(char *dest, const char *src) {
         char *to = dest;
         for( const char *from = src ; *from ; from++ ) {
-            int i = 9999;
             if ( *from <= '+' ) {
                 sprintf(to,"%%%02x",*from);
                 to += 3;
@@ -407,6 +406,7 @@ int encode_html_entities(char *dest, const char *src) {
                 continue;
             }
             //if ( *from=='\r' || *from=='\n' ) continue;
+	    unsigned i;
             for( i=0 ; i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ; i++ )
                 if ( *from == NAMED_ENTITIES[i][1][0] ) break;
             if ( i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ) {
@@ -419,5 +419,5 @@ int encode_html_entities(char *dest, const char *src) {
             }
         }
         *to = 0;
-        return strlen(dest);
+	return (size_t)(to - dest);
 }
