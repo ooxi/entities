@@ -273,8 +273,8 @@ static const char *const NAMED_ENTITIES[][2] = {
 
 static int cmp(const void *key, const void *value)
 {
-	return strncmp((const char *)key, *(const char **)value,
-		strlen(*(const char **)value));
+	return strncmp((const char *)key, *(const char *const *)value,
+		strlen(*(const char *const *)value));
 }
 
 static const char *get_named_entity(const char *name)
