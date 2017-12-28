@@ -100,6 +100,7 @@ static const char *const NAMED_ENTITIES[][2] = {
 	{ "chi;", "χ" },
 	{ "circ;", "ˆ" },
 	{ "clubs;", "♣" },
+	{ "commat;", "@" },
 	{ "cong;", "≅" },
 	{ "copy;", "©" },
 	{ "crarr;", "↵" },
