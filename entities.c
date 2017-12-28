@@ -395,23 +395,24 @@ size_t decode_html_entities_utf8(char *dest, const char *src)
 size_t encode_html_entities(char *dest, const char *src) {
         char *to = dest;
         for( const char *from = src ; *from ; from++ ) {
-            if ( *from <= '+' ) {
-                sprintf(to,"%%%02x",*from);
-                to += 3;
-                continue;
-            }
-            if ( *from<='z' ) {
-                *to = *from;
-                to++;
-                continue;
-            }
+	    if ( *from>=0 ) {
+                if ( (*from>='A' && *from<='Z') || (*from>='a' && *from<='z') ) {
+                    *to = *from;
+                    to++;
+                    continue;
+                }
+	    }
             //if ( *from=='\r' || *from=='\n' ) continue;
 	    unsigned i;
             for( i=0 ; i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ; i++ )
-                if ( *from == NAMED_ENTITIES[i][1][0] ) break;
+		if ( strncmp(from,NAMED_ENTITIES[i][1],strlen(NAMED_ENTITIES[i][1]))==0 ) 
+			break;
             if ( i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ) {
+		*to = '&';
+		to++;
                 strcpy(to,NAMED_ENTITIES[i][0]);
                 to += strlen(NAMED_ENTITIES[i][0]);
+		from += strlen(NAMED_ENTITIES[i][1])-1;
             }
             else {
                 *to = *from;
@@ -421,3 +422,4 @@ size_t encode_html_entities(char *dest, const char *src) {
         *to = 0;
 	return (size_t)(to - dest);
 }
+
