@@ -30,6 +30,21 @@ int main(void)
 		assert(strcmp(buffer, SAMPLE) == 0);
 	}
 
+	{
+		static const char INPUT[] = "Miguel Leitão\ntest@example.org\n<p>Hello!!</p>";
+		static char GOAL[] = 
+			"Miguel Leit&atilde;o\ntest&commat;example.org\n&lt;p&gt;Hello!!&lt;/p&gt;";
+		char OUTPUT[sizeof GOAL];
+		char REVERT[sizeof GOAL];
+		assert(encode_html_entities(OUTPUT, INPUT) == sizeof GOAL - 1);
+		// printf("output: %s\n", OUTPUT);
+		assert(strcmp(OUTPUT,GOAL) == 0);
+		decode_html_entities_utf8(REVERT,OUTPUT);
+		
+		assert(strcmp(INPUT,REVERT) == 0);
+	}
+
+
 	fprintf(stdout, "All tests passed :-)\n");
 	return EXIT_SUCCESS;
 }
