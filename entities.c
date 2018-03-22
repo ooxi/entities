@@ -127,6 +127,7 @@ static const char *const NAMED_ENTITIES[][2] = {
 	{ "euml;", "ë" },
 	{ "euro;", "€" },
 	{ "exist;", "∃" },
+	{ "excl;", "!" },
 	{ "fnof;", "ƒ" },
 	{ "forall;", "∀" },
 	{ "frac12;", "½" },
