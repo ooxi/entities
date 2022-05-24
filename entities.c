@@ -9,8 +9,10 @@
 
 #include <errno.h>
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 #define UNICODE_MAX 0x10FFFFul
 
@@ -388,6 +390,36 @@ size_t decode_html_entities_utf8(char *dest, const char *src)
 	to += remaining;
 	*to = 0;
 
+	return (size_t)(to - dest);
+}
+
+size_t encode_html_entities(char *dest, const char *src) {
+	char *to = dest;
+	for( const char *from = src ; *from ; from++ ) {
+		if ( *from>=0 ) {
+			if ( (*from>='A' && *from<='Z') || (*from>='a' && *from<='z') ) {
+				*to = *from;
+				to++;
+				continue;
+			}
+		}
+		unsigned i;
+		for( i=0 ; i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ; i++ )
+			if ( strncmp(from,NAMED_ENTITIES[i][1],strlen(NAMED_ENTITIES[i][1]))==0 ) 
+				break;
+		if ( i<sizeof NAMED_ENTITIES / sizeof *NAMED_ENTITIES ) {
+			*to = '&';
+			to++;
+			strcpy(to,NAMED_ENTITIES[i][0]);
+			to += strlen(NAMED_ENTITIES[i][0]);
+			from += strlen(NAMED_ENTITIES[i][1])-1;
+		}
+		else {
+			*to = *from;
+			to++;
+		}
+	}
+	*to = 0;
 	return (size_t)(to - dest);
 }
 
