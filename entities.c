@@ -102,6 +102,7 @@ static const char *const NAMED_ENTITIES[][2] = {
 	{ "chi;", "χ" },
 	{ "circ;", "ˆ" },
 	{ "clubs;", "♣" },
+	{ "colon;", ":" },
 	{ "commat;", "@" },
 	{ "cong;", "≅" },
 	{ "copy;", "©" },
@@ -128,6 +129,7 @@ static const char *const NAMED_ENTITIES[][2] = {
 	{ "euml;", "ë" },
 	{ "euro;", "€" },
 	{ "exist;", "∃" },
+	{ "excl;", "!" },
 	{ "fnof;", "ƒ" },
 	{ "forall;", "∀" },
 	{ "frac12;", "½" },
@@ -350,19 +352,17 @@ static bool parse_entity(
 
 		return 1;
 	}
-	else
-	{
-		const char *entity = get_named_entity(&current[1]);
-		if(!entity) return 0;
 
-		size_t len = strlen(entity);
-		memcpy(*to, entity, len);
+	const char *entity = get_named_entity(&current[1]);
+	if(!entity) return 0;
 
-		*to += len;
-		*from = end + 1;
+	size_t len = strlen(entity);
+	memcpy(*to, entity, len);
 
-		return 1;
-	}
+	*to += len;
+	*from = end + 1;
+
+	return 1;
 }
 
 size_t decode_html_entities_utf8(char *dest, const char *src)
